@@ -1,17 +1,12 @@
-/* IS5102, Alexander Konovalov, October 2020
-
-University database example for the cycle of lectures on SQL
-
-Lectures 8 - 11
-
+/* 
 Usage:
 - To connect to a transient in-memory database:
 
-    sqlite3 --init uni.sql
+    sqlite3 --init bookstore.sql
 
 - To connect to a named database:
 
-    sqlite3 <name.db> --init uni.sql
+    sqlite3 <name.db> --init bookstore.sql
 */
 
 .mode column
@@ -24,6 +19,7 @@ PRAGMA foreign_keys = TRUE;
 -- database. Tables are listed in the order which allows to drop them
 -- without breaking foreign key constraints.
 -- 
+-- book_id barcode generator: https://barcode.tec-it.com/de/ISBN13  https://www.random.org/strings/
 /*
 DROP table teaches;
 DROP table course;
@@ -35,6 +31,107 @@ DROP table department;
 ----------------------------------------------------------------------
 -- DECLARATIONS
 ----------------------------------------------------------------------
+CREATE TABLE order ( 
+order_id CHAR(10),
+street VARCHAR(50),
+city VARCHAR(50),
+postcode VARCHAR(30),
+country VARCHAR(50),
+date_ordered DATE, --Check
+date_delivered DATE, --Check 
+PRIMARY KEY (order_id),
+FOREIGN KEY (customer_id) REFERENCES customer
+ON DELETE CASCADE 
+ON UPDATE CASCADE
+);
+
+CREATE TABLE customer (
+customer_id CHAR(10), 
+customer_name VARCHAR(50), --Alteration 
+email VARCHAR(50),
+street VARCHAR(50),
+city VARCHAR(50),
+postcode VARCHAR(30),
+country VARCHAR(30),
+PRIMARY KEY (customer_id)
+);
+
+CREATE TABLE phone_customer(
+customer_id CHAR(10), 
+phone_type VARCHAR(10),  --Alteration 
+phone_number VARCHAR(30), --Alteration 
+PRIMARY KEY (customer_id, phone_type, phone_number),
+FOREIGN KEY (customer_id) REFERENCES customer
+);
+
+
+CREATE TABLE review(
+customer_id CHAR(10),
+book_id CHAR(13),
+rating VARCHAR(1),
+PRIMARY KEY (customer_id, book_id),
+FOREIGN KEY (customer_id) REFERENCES customer
+FOREIGN KEY (book_id) REFERENCES book
+);
+
+
+CREATE TABLE genre( 
+book_id CHAR(13),
+genre VARCHAR(50),
+PRIMARY KEY (book_id, genre),
+FOREIGN KEY (book_id) REFERENCES book
+);
+
+CREATE TABLE edition_( --Alteration
+book_id CHAR(13),
+book_edition VARCHAR(20), --Alteration
+book_type VARCHAR(9),  --Alteration, admissible values: "audiobook", "hardcover", "paperback"
+price NUMERIC(4,2),
+quantity_in_stock INTEGER,
+PRIMARY KEY (book_id, book_edition, book_type),
+FOREIGN KEY (book_id) REFERENCES book
+ON DELETE CASCADE  --Added
+ON UPDATE CASCADE  --Added
+);
+
+CREATE TABLE contains ( 
+book_id CHAR(13),
+order_id CHAR (10),
+book_edition VARCHAR(20), --Alteration
+book_type VARCHAR(9),  --Alteration, admissible values: "audiobook", "hardcover", "paperback"
+PRIMARY KEY (book_id, order_id, book_edition, book_type),
+FOREIGN KEY (book_id) REFERENCES book
+FOREIGN KEY (order_id) REFERENCES order
+FOREIGN KEY (book_edition) REFERENCES edition_
+FOREIGN KEY (book_type) REFERENCES edition_
+);
+
+CREATE TABLE supplies ( 
+book_id CHAR(13),
+supplier_id CHAR(10),
+book_edition VARCHAR(20), --Alteration
+book_type VARCHAR(9),  --Alteration, admissible values: "audiobook", "hardcover", "paperback"
+supply_price NUMERIC(4,2),
+PRIMARY KEY (book_id, book_edition, book_type),
+FOREIGN KEY (book_id) REFERENCES book
+FOREIGN KEY (book_edition) REFERENCES edition_
+FOREIGN KEY (book_type) REFERENCES edition_
+);
+
+CREATE TABLE supplier( 
+supplier_id CHAR(10),
+supplier_name VARCHAR(50),
+account_no VARCHAR(10),
+supplier_id CHAR(10),
+PRIMARY KEY (supplier_id)
+);
+
+CREATE TABLE phone_supplier( 
+supplier_id CHAR(10),
+phone VARCHAR(30),
+PRIMARY KEY (supplier_id)
+FOREIGN KEY (supplier_id) REFERENCES supplier
+);
 
 CREATE TABLE department (
     dept_id    CHAR(5),
