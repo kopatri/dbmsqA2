@@ -19,7 +19,7 @@ PRAGMA foreign_keys = TRUE;
 -- database. Tables are listed in the order which allows to drop them
 -- without breaking foreign key constraints.
 -- 
--- book_id barcode generator: https://barcode.tec-it.com/de/ISBN13  https://www.random.org/strings/
+-- book_id barcode generator: https://generate.plus/en/number/isbn  https://www.random.org/strings/
 /*
 DROP table teaches;
 DROP table course;
@@ -133,6 +133,7 @@ PRIMARY KEY (supplier_id)
 FOREIGN KEY (supplier_id) REFERENCES supplier
 );
 
+/*
 CREATE TABLE department (
     dept_id    CHAR(5),
     dept_name  VARCHAR(20) NOT NULL,
@@ -188,93 +189,70 @@ CREATE TABLE prereq (
     FOREIGN KEY (prereq_id) references course(course_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE);
-
+*/
 ----------------------------------------------------------------------
 -- TEST DATA
 ----------------------------------------------------------------------
-       
-INSERT INTO department
-VALUES ('CS', 'Computer Science', 'Jack Cole', 1500000.00),
-       ('CHEM', 'Chemistry', 'Purdie',200000.00),
-       ('MATH','Maths and Stats', 'Maths', 900000.00),
-       ('PHYS', 'Phys and Astro', 'Physics', 1500000.00);
 
-INSERT INTO instructor 
-VALUES ('45797', 'Bob', 'CS', 28000),
-       ('23541', 'Javier', 'CS', 33600),
-       ('22418', 'Karolina', 'CS', 27000),
-       ('34123', 'Layla', 'MATH', 27000),
-       ('12355', 'Pedro', 'MATH', 32000),
-       ('52412', 'Jan', 'MATH', 29300),
-       ('21357', 'Isaac', 'CHEM', 37500),
-       ('13842', 'Ali', 'CHEM', 34900),
-       ('23456', 'Alice', 'PHYS', 29500),
-       ('45638', 'Sana', 'PHYS', 31500);
+INSERT INTO order
+VALUES('OR12345678','2 Waterloo', 'Edinburgh', 'EH1 3EG','Scotland','2010-10-10','2016-10-15','CUS12345678'),
+('OR12345678','4 Waterloo', 'Edinburgh', 'EH1 3EG','Scotland','2010-10-10','2016-10-15','CUS87654321');
 
-INSERT INTO student 
-VALUES ('64545', 'Abdul', 'MATH', 180),
-       ('78778', 'Martha', 'MATH', 90),
-       ('99680', 'Eliot', 'CHEM', 90),
-       ('78621', 'Bartosz', 'CHEM', 90),
-       ('67868', 'Elias', 'CS', 90),
-       ('87690', 'Joao', 'CS', 90),
-       ('79879', 'Tom', 'CS', 90),
-       ('90780', 'Julia', 'CS', 120),
-       ('89675', 'Eilidh', 'PHYS', 120),
-       ('96544', 'Sarah', 'PHYS', 180);
 
-INSERT INTO course 
-VALUES ('CS1234', 'Python', 'CS', 15),
-       ('CS1001', 'Intro to Java', 'CS', 15),
-       ('CS2234', 'Haskell','CS', 15),
-       ('CS5099', 'Dissertation', 'CS', 30),
-       ('MT4665', 'Algebra', 'MATH', 15),
-       ('MT2001', 'Analysis', 'MATH', 15),
-       ('MT2005', 'Group Theory', 'MATH', 15),
-       ('MT5002', 'Fractals', 'MATH', 15),
-       ('CH5002', 'Biochemistry', 'CHEM', 15),
-       ('CH5012', 'NMR', 'CHEM', 15),
-       ('CH3033', 'Organic chemistry', 'CHEM', 15),
-       ('CH5015', 'Group project', 'CHEM', 30),
-       ('PH4001', 'Electronics', 'PHYS', 15),
-       ('PH4002', 'Lasers', 'PHYS', 15),
-       ('PH3457', 'Photonics', 'PHYS', 30);
+INSERT INTO customer
+VALUES('CU12345678','Mike Miller', 'mikemiller@gmail.com','2 Waterloo','Edinburgh','EH1 3EG','Scotland');
+('CU87654321','Thomas McDonald', 'thomasmcdonald@hotmail.com','4 Waterloo','Edinburgh','EH1 3EG','Scotland');
 
-INSERT INTO course_runs
-VALUES ('CS1234', 2019, 2), ('CS1234', 2020, 2), -- Python
-       ('CS1001', 2019, 1), ('CS1001', 2020, 1), -- Intro to Java
-       ('CS2234', 2019, 2), ('CS2234', 2020, 2), -- Haskell
-       ('CS5099', 2019, 1), ('CS5099', 2020, 1), -- Dissertation
-       ('CS5099', 2019, 2), ('CS5099', 2020, 2), -- Dissertation
-       ('MT4665', 2019, 1), ('MT4665', 2020, 1), -- Algebra
-       ('MT2001', 2019, 1), ('MT2001', 2020, 1), -- Analysis
-       ('MT2005', 2019, 2), ('MT2005', 2020, 2), -- Group Theory
-       ('MT5002', 2019, 1),                      -- Fractals
-       ('CH5002', 2019, 1),                      -- Biochemistry
-                            ('CH5012', 2020, 1), -- NMR
-       ('CH3033', 2019, 1), ('CH3033', 2020, 1), -- Organic chemistry
-       ('CH5015', 2019, 1), ('CH5015', 2020, 1), -- Group project
-       ('CH5015', 2019, 2), ('CH5015', 2020, 2), -- Group project
-       ('PH4001', 2019, 1), ('PH4001', 2020, 2), -- Electronics
-       ('PH4002', 2019, 1), ('PH4002', 2020, 1), -- Lasers
-                            ('PH3457', 2020, 1); -- Photonics
-       
-INSERT INTO teaches 
-VALUES ('45797', 'CS1234'),
-       ('45797', 'CS2234'),
-       ('23541', 'CS1001'),
-       ('22418', 'CS5099'),
-       ('34123', 'MT2001'),
-       ('52412', 'MT5002'),
-       ('21357', 'CH5002'),
-       ('13842', 'CH5012'),
-       ('12355', 'MT4665'),
-       ('23456', 'PH3457');
 
-INSERT INTO prereq
-VALUES ('MT5002', 'MT2001'),
-       ('MT2005', 'MT4665');
-       
+INSERT INTO phone_customer
+VALUES('CU12345678','private','+441316081133'),
+('CU87654321','business','+441315295299');
+
+
+INSERT INTO review
+VALUES("CU12345678",'0-6879-4771-5','5'),
+("CU87654321",'0-8016-2185-2','2');
+
+
+INSERT INTO book
+VALUES('0-6879-4771-5', 'Database Design', 'Fred Heypen', 'Ultimate Books'), --TASK 3 requirement
+('0-8016-2185-2', 'Database Concept', 'Larry Fink', 'Ultimate Books'); --TASK 3 requirement
+
+
+INSERT INTO genre
+VALUES('0-6879-4771-5', 'Science and Technology'), --TASK 3 requirement
+('0-8016-2185-2', 'Science and Technology'); --TASK 3 requirement
+
+
+INSERT INTO edition_
+VALUES('0-6879-4771-5','Volume 3', 'hardcover', '29.99', '1'), --TASK 3 requirement
+('0-8016-2185-2','Volume 2', 'paperback', '24.99' '4'); --TASK 3 requirement
+
+
+INSERT INTO contains
+VALUES('0-6879-4771-5','OR12345678','Volume 3','harcover'), --TASK3 requirement
+VALUES('0-8016-2185-2','OR87654321','Volume 2','paperback'); --TASK3 requirement
+
+
+INSERT INTO supplies
+VALUES('0-6879-4771-5','SUP1234567', 'Volume 3', 'hardcover', '9.99'), --TASK 3 requirement
+('0-8016-2185-2','SUP7654321', 'Volume 2', 'paperback', '4.99'); --TASK 3 requirement
+
+
+INSERT INTO supplier
+VALUES('SUP1234567', 'Libsupply Limited','ACC1234567'), --TASK 3 requirement
+VALUES('SUP7654321', 'Bookworm Limited','ACC7654321'); --TASK 3 requirement
+
+
+INSERT INTO phone_supplier
+VALUES('SUP1234567', '+447774873428'), -- TASK3 requirement
+('SUP7654321', '+447842279009'); -- TASK3 requirement
+
+
+
+
+
+ /*      
 ----------------------------------------------------------------------
 -- VISUAL DATA CONTROL
 ----------------------------------------------------------------------
@@ -639,3 +617,4 @@ SELECT * FROM student WHERE stud_id = '78778';
 SELECT * FROM credit_logs;
 
 
+*/
