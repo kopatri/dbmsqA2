@@ -8,8 +8,9 @@
  
  sqlite3 <name.db> --init bookstore.sql
  */
-.mode column.headers 
-on.width 18 18 18 18 -- enforce foreign keys check
+.mode column
+.headers on
+.width 18 18 18 18 -- enforce foreign keys check
 PRAGMA foreign_keys = TRUE;
 
 -- Uncomment the DROP command below if you need to reset an existing
@@ -43,13 +44,12 @@ CREATE TABLE order_ (
   date_delivered DATE,
   customer_id CHAR(10),
   PRIMARY KEY (order_id),
-  FOREIGN KEY (customer_id) REFERENCES customer 
+  FOREIGN KEY (customer_id) REFERENCES customer
 );
 
 CREATE TABLE customer (
   customer_id CHAR(10),
   customer_name VARCHAR(50),
-  --Alteration
   email VARCHAR(50),
   street VARCHAR(50),
   city VARCHAR(50),
@@ -61,9 +61,7 @@ CREATE TABLE customer (
 CREATE TABLE phone_customer(
   customer_id CHAR(10),
   phone_type VARCHAR(10),
-  --Alteration
   phone_number VARCHAR(30),
-  --Alteration
   PRIMARY KEY (customer_id, phone_type, phone_number),
   FOREIGN KEY (customer_id) REFERENCES customer
 );
@@ -77,13 +75,12 @@ CREATE TABLE review(
   FOREIGN KEY (book_id) REFERENCES book
 );
 
-
-CREATE TABLe book(
-book_id CHAR(13),
-title VARCHAR(50),
-author VARCHAR(50),
-publisher VARCHAR(50),
-PRIMARY KEY (book_id)
+CREATE TABLE book(
+  book_id CHAR(13),
+  title VARCHAR(50),
+  author VARCHAR(50),
+  publisher VARCHAR(50),
+  PRIMARY KEY (book_id)
 );
 
 CREATE TABLE genre(
@@ -97,20 +94,17 @@ CREATE TABLE edition_(
   book_id CHAR(13),
   book_edition VARCHAR(20),
   book_type VARCHAR(9),
-  --Alteration, admissible values: "audiobook", "hardcover", "paperback"
   price NUMERIC(4, 2),
   quantity_in_stock INTEGER,
   PRIMARY KEY (book_id, book_edition, book_type),
-  FOREIGN KEY (book_id) REFERENCES book 
+  FOREIGN KEY (book_id) REFERENCES book
 );
 
 CREATE TABLE contains (
   book_id CHAR(13),
   order_id CHAR (10),
   book_edition VARCHAR(20),
-  --Alteration
   book_type VARCHAR(9),
-  --Alteration, admissible values: "audiobook", "hardcover", "paperback"
   PRIMARY KEY (book_id, order_id, book_edition, book_type),
   FOREIGN KEY (book_id) REFERENCES book,
   FOREIGN KEY (order_id) REFERENCES order_,
@@ -122,9 +116,7 @@ CREATE TABLE supplies (
   book_id CHAR(13),
   supplier_id CHAR(10),
   book_edition VARCHAR(20),
-  --Alteration
   book_type VARCHAR(9),
-  --Alteration, admissible values: "audiobook", "hardcover", "paperback"
   supply_price NUMERIC(4, 2),
   PRIMARY KEY (book_id, book_edition, book_type),
   FOREIGN KEY (book_id) REFERENCES book,
@@ -142,7 +134,8 @@ CREATE TABLE supplier(
 CREATE TABLE phone_supplier(
   supplier_id CHAR(10),
   phone VARCHAR(30),
-  PRIMARY KEY (supplier_id) FOREIGN KEY (supplier_id) REFERENCES supplier
+  PRIMARY KEY (supplier_id),
+  FOREIGN KEY (supplier_id) REFERENCES supplier
 );
 
 /*
@@ -216,7 +209,7 @@ VALUES
     'Scotland',
     2010 -10 -10,
     2016 -10 -15,
-    'CUS12345678'
+    'CU12345678'
   ),
   (
     'OR87654321',
@@ -226,7 +219,7 @@ VALUES
     'Scotland',
     2010 -10 -10,
     2016 -10 -15,
-    'CUS87654321'
+    'CU87654321'
   );
 
 INSERT INTO
@@ -263,7 +256,8 @@ VALUES
   ("CU12345678", '0-6879-4771-5', 5),
   ("CU87654321", '0-8016-2185-2', 2);
 
-INSERT INTO book
+INSERT INTO
+  book
 VALUES
   (
     '0-6879-4771-5',
