@@ -90,6 +90,34 @@ CREATE TABLE genre(
   FOREIGN KEY (book_id) REFERENCES book
 );
 
+
+CREATE TABLE supplier(
+  supplier_id CHAR(10),
+  supplier_name VARCHAR(50),
+  account_no VARCHAR(10),
+  PRIMARY KEY (supplier_id)
+);
+
+CREATE TABLE phone_supplier(
+  supplier_id CHAR(10),
+  phone VARCHAR(30),
+  PRIMARY KEY (supplier_id),
+  FOREIGN KEY (supplier_id) REFERENCES supplier
+);
+
+CREATE TABLE supplies (
+  book_id CHAR(13),
+  supplier_id CHAR(10),
+  book_edition VARCHAR(20),
+  book_type VARCHAR(9),
+  supply_price NUMERIC(4, 2),
+  PRIMARY KEY (book_id, supplier_id, book_edition, book_type),
+  FOREIGN KEY (supplier_id) REFERENCES supplier,
+  FOREIGN KEY (book_id) REFERENCES book,
+  FOREIGN KEY (book_edition) REFERENCES edition_,
+  FOREIGN KEY (book_type) REFERENCES edition_
+);
+
 CREATE TABLE edition_(
   book_id CHAR(13),
   book_edition VARCHAR(20),
@@ -112,31 +140,27 @@ CREATE TABLE contains (
   FOREIGN KEY (book_type) REFERENCES edition_
 );
 
-CREATE TABLE supplies (
-  book_id CHAR(13),
-  supplier_id CHAR(10),
-  book_edition VARCHAR(20),
-  book_type VARCHAR(9),
-  supply_price NUMERIC(4, 2),
-  PRIMARY KEY (book_id, book_edition, book_type),
-  FOREIGN KEY (book_id) REFERENCES book,
-  FOREIGN KEY (book_edition) REFERENCES edition_,
-  FOREIGN KEY (book_type) REFERENCES edition_
-);
-
-CREATE TABLE supplier(
-  supplier_id CHAR(10),
-  supplier_name VARCHAR(50),
-  account_no VARCHAR(10),
-  PRIMARY KEY (supplier_id)
-);
-
-CREATE TABLE phone_supplier(
-  supplier_id CHAR(10),
-  phone VARCHAR(30),
-  PRIMARY KEY (supplier_id),
-  FOREIGN KEY (supplier_id) REFERENCES supplier
-);
+INSERT INTO
+  customer
+VALUES
+  (
+    'CU12345678',
+    'Mike Miller',
+    'mikemiller@gmail.com',
+    '2 Waterloo',
+    'Edinburgh',
+    'EH1 3EG',
+    'Scotland'
+  ),
+  (
+    'CU87654321',
+    'Thomas McDonald',
+    'thomasmcdonald@hotmail.com',
+    '4 Waterloo',
+    'Edinburgh',
+    'EH1 3EG',
+    'Scotland'
+  );
 
 INSERT INTO
   order_
@@ -163,38 +187,10 @@ VALUES
   );
 
 INSERT INTO
-  customer
-VALUES
-  (
-    'CU12345678',
-    'Mike Miller',
-    'mikemiller@gmail.com',
-    '2 Waterloo',
-    'Edinburgh',
-    'EH1 3EG',
-    'Scotland'
-  ),
-  (
-    'CU87654321',
-    'Thomas McDonald',
-    'thomasmcdonald@hotmail.com',
-    '4 Waterloo',
-    'Edinburgh',
-    'EH1 3EG',
-    'Scotland'
-  );
-
-INSERT INTO
   phone_customer
 VALUES
   ('CU12345678', 'private', '+441316081133'),
   ('CU87654321', 'business', '+441315295299');
-
-INSERT INTO
-  review
-VALUES
-  ("CU12345678", '0-6879-4771-5', 5),
-  ("CU87654321", '0-8016-2185-2', 2);
 
 INSERT INTO
   book
@@ -205,7 +201,7 @@ VALUES
     'Fred Heypen',
     'Ultimate Books'
   ),
-(
+  (
     '0-8016-2185-2',
     'Database Concept',
     'Larry Fink',
@@ -213,43 +209,49 @@ VALUES
   );
 
 INSERT INTO
+  review
+VALUES
+  ("CU12345678", '0-6879-4771-5', 5),
+  ("CU87654321", '0-8016-2185-2', 2);
+
+INSERT INTO
   genre
 VALUES
   ('0-6879-4771-5', 'Science and Technology'),
   ('0-8016-2185-2', 'Science and Technology');
+
+
+
+
+INSERT INTO
+  supplier
+VALUES
+  ('SUP1234567', 'Libsupply Limited', 'ACC1234567'),
+  ('SUP7654321', 'Bookworm Limited', 'ACC7654321');
+
+
+INSERT INTO
+  phone_supplier
+VALUES
+  ('SUP1234567', '+447774873428'),
+  ('SUP7654321', '+447842279009');
 
 INSERT INTO
   edition_
 VALUES
   (
     '0-6879-4771-5',
-    'Volume 3',
+    'Volume3',
     'hardcover',
     29.99,
     1
   ),
   (
     '0-8016-2185-2',
-    'Volume 2',
+    'Volume2',
     'paperback',
     24.99,
     4
-  );
-
-INSERT INTO
-  contains
-VALUES
-  (
-    '0-6879-4771-5',
-    'OR12345678',
-    'Volume 3',
-    'harcover'
-  ),
-  (
-    '0-8016-2185-2',
-    'OR87654321',
-    'Volume 2',
-    'paperback'
   );
 
 INSERT INTO
@@ -258,26 +260,30 @@ VALUES
   (
     '0-6879-4771-5',
     'SUP1234567',
-    'Volume 3',
+    'Volume3',
     'hardcover',
     9.99
   ),
   (
     '0-8016-2185-2',
     'SUP7654321',
-    'Volume 2',
+    'Volume2',
     'paperback',
     4.99
   );
 
-INSERT INTO
-  supplier
+  INSERT INTO
+  contains
 VALUES
-  ('SUP1234567', 'Libsupply Limited', 'ACC1234567'),
-  ('SUP7654321', 'Bookworm Limited', 'ACC7654321');
-
-INSERT INTO
-  phone_supplier
-VALUES
-  ('SUP1234567', '+447774873428'),
-  ('SUP7654321', '+447842279009');
+  (
+    '0-6879-4771-5',
+    'OR12345678',
+    'Volume3',
+    'harcover'
+  ),
+  (
+    '0-8016-2185-2',
+    'OR87654321',
+    'Volume2',
+    'paperback'
+  );
