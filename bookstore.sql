@@ -8,7 +8,9 @@
  
  sqlite3 <name.db> --init bookstore.sql
  */
-.mode column.headers on.width 18 18 18 18 -- enforce foreign keys check
+.mode column
+.headers on
+.width 18 18 18 18 -- enforce foreign keys check
 PRAGMA foreign_keys = TRUE;
 
 -- Uncomment the DROP command below if you need to reset an existing
