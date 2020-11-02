@@ -2,7 +2,7 @@
 
 University database example for the cycle of lectures on SQL
 
-Lectures 8 - 11
+Lectures 8, 9
 
 Usage:
 - To connect to a transient in-memory database:
@@ -16,7 +16,7 @@ Usage:
 
 .mode column
 .headers on
-.width 18 18 18 18
+
 -- enforce foreign keys check
 PRAGMA foreign_keys = TRUE;
 
@@ -53,29 +53,20 @@ CREATE TABLE instructor (
     FOREIGN KEY (dept_id) REFERENCES department);
 
 CREATE TABLE student (
-    stud_id   CHAR(5),
-    name      VARCHAR(20) NOT NULL,
-    dept_id   VARCHAR(20),
-    tot_cred  NUMERIC(3,0) DEFAULT 0,
-    PRIMARY KEY (stud_id),
-    FOREIGN KEY (dept_id) REFERENCES department);
+   stud_id   CHAR(5),
+   name      VARCHAR(20) NOT NULL,
+   dept_id   VARCHAR(20),
+   tot_cred  NUMERIC(3,0),
+   PRIMARY KEY (stud_id),
+   FOREIGN KEY (dept_id) REFERENCES department);
 
 CREATE TABLE course (
-    course_id  VARCHAR(8),
-    title      VARCHAR(50),
-    dept_id    VARCHAR(20),
-    credits    NUMERIC(2,0),
-    PRIMARY KEY (course_id),
-    FOREIGN KEY (dept_id) references department
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
-
-CREATE TABLE course_runs (
-    course_id  VARCHAR(8),
-    year       INTEGER,
-    semester   INTEGER,
-    PRIMARY KEY (course_id, year, semester),
-    FOREIGN KEY (course_id) references course);
+   course_id  VARCHAR(8),
+   title      VARCHAR(50),
+   dept_id    VARCHAR(20),
+   credits    NUMERIC(2,0),
+   PRIMARY KEY (course_id),
+   FOREIGN KEY (dept_id) references department);
  
 CREATE TABLE teaches (
     instr_id  CHAR(5),
@@ -83,14 +74,6 @@ CREATE TABLE teaches (
     PRIMARY KEY (instr_id,course_id),
     FOREIGN KEY (instr_id) references instructor,
     FOREIGN KEY (course_id) references course);
-
-CREATE TABLE prereq (
-    course_id  VARCHAR(8),
-    prereq_id  VARCHAR(8),
-    PRIMARY KEY (course_id),
-    FOREIGN KEY (prereq_id) references course(course_id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
 
 ----------------------------------------------------------------------
 -- TEST DATA
@@ -143,25 +126,6 @@ VALUES ('CS1234', 'Python', 'CS', 15),
        ('PH4002', 'Lasers', 'PHYS', 15),
        ('PH3457', 'Photonics', 'PHYS', 30);
 
-INSERT INTO course_runs
-VALUES ('CS1234', 2019, 2), ('CS1234', 2020, 2), -- Python
-       ('CS1001', 2019, 1), ('CS1001', 2020, 1), -- Intro to Java
-       ('CS2234', 2019, 2), ('CS2234', 2020, 2), -- Haskell
-       ('CS5099', 2019, 1), ('CS5099', 2020, 1), -- Dissertation
-       ('CS5099', 2019, 2), ('CS5099', 2020, 2), -- Dissertation
-       ('MT4665', 2019, 1), ('MT4665', 2020, 1), -- Algebra
-       ('MT2001', 2019, 1), ('MT2001', 2020, 1), -- Analysis
-       ('MT2005', 2019, 2), ('MT2005', 2020, 2), -- Group Theory
-       ('MT5002', 2019, 1),                      -- Fractals
-       ('CH5002', 2019, 1),                      -- Biochemistry
-                            ('CH5012', 2020, 1), -- NMR
-       ('CH3033', 2019, 1), ('CH3033', 2020, 1), -- Organic chemistry
-       ('CH5015', 2019, 1), ('CH5015', 2020, 1), -- Group project
-       ('CH5015', 2019, 2), ('CH5015', 2020, 2), -- Group project
-       ('PH4001', 2019, 1), ('PH4001', 2020, 2), -- Electronics
-       ('PH4002', 2019, 1), ('PH4002', 2020, 1), -- Lasers
-                            ('PH3457', 2020, 1); -- Photonics
-       
 INSERT INTO teaches 
 VALUES ('45797', 'CS1234'),
        ('45797', 'CS2234'),
@@ -174,10 +138,6 @@ VALUES ('45797', 'CS1234'),
        ('12355', 'MT4665'),
        ('23456', 'PH3457');
 
-INSERT INTO prereq
-VALUES ('MT5002', 'MT2001'),
-       ('MT2005', 'MT4665');
-       
 ----------------------------------------------------------------------
 -- VISUAL DATA CONTROL
 ----------------------------------------------------------------------
@@ -194,11 +154,8 @@ SELECT * FROM student;
 
 SELECT * FROM course;
 
-SELECT * FROM course_runs;
-
 SELECT * FROM teaches;
 
-SELECT * FROM prereq;
 ----------------------------------------------------------------------
 -- EXAMPLE QUERIES FOR LECTURE 8
 ----------------------------------------------------------------------
@@ -367,178 +324,3 @@ HAVING AVG (salary) > 30000;
 -- Find the total sum of all annual salaries
 SELECT SUM (salary)
   FROM instructor;
-
-----------------------------------------------------------------------
--- EXAMPLE QUERIES FOR LECTURE 10
-----------------------------------------------------------------------
-
--- Find courses that ran in Semester 2 of 2019 or in Semester 1 of 2020
-SELECT course_id 
-  FROM course_runs 
- WHERE semester = 2 
-   AND year = 2019
- UNION -- you can also try `UNION ALL`
-SELECT course_id
-  FROM course_runs
- WHERE semester = 1 
-   AND year = 2020;
-
--- Find courses that ran in Semester 2 of 2019 and in Semester 2 of 2020
-SELECT course_id 
-  FROM course_runs 
- WHERE semester = 2 
-   AND year = 2019
-INTERSECT
-SELECT course_id
-  FROM course_runs
- WHERE semester = 2 
-   AND year = 2020;
-
--- Find courses that ran in Semester 1 of 2019 but not in Semester 1 of 2020
-SELECT course_id 
-  FROM course_runs 
- WHERE semester = 1 
-   AND year = 2019
-EXCEPT
-SELECT course_id
-  FROM course_runs
- WHERE semester = 1 
-   AND year = 2020;    
-
--- A view of instructors without their salary
-CREATE VIEW faculty AS
-SELECT instr_id, instr_name, dept_id
-  FROM instructor;
-
-SELECT * from faculty;
-
--- A view of department salary totals
--- (note specifying attribute names )
-CREATE VIEW departments_total_salary(dept_code, total_salary) AS
-SELECT dept_id, SUM (salary)
-  FROM instructor
- GROUP BY dept_id;
-
-SELECT * from departments_total_salary;
-
--- Views defined using other views
-CREATE VIEW acad_year_2020 AS
-SELECT semester, course_id, dept_id, title
-  FROM course_runs NATURAL JOIN course
- WHERE year  = 2020;
-
-SELECT * FROM acad_year_2020;
-
-CREATE VIEW cs_acad_year_2020 AS
-SELECT semester, course_id, title 
-  FROM acad_year_2020 
- WHERE dept_id= 'CS';
-  
-SELECT * FROM cs_acad_year_2020;
-
-----------------------------------------------------------------------
--- EXAMPLE QUERIES FOR LECTURE 11
-----------------------------------------------------------------------
-
--- Find the average instructors' salaries of those departments
--- where the average salary is greater than £31,000.
-SELECT dept_id, avg_salary
-  FROM (SELECT dept_id, avg (salary) as avg_salary
-          FROM instructor
-      GROUP BY dept_id)
- WHERE avg_salary > 31000;
-
--- Scalar subquery is one which is used where a single value is expected
--- For example, count number of instructors for each department
-SELECT dept_id,
-      (SELECT count(*)
-         FROM instructor
-        WHERE department.dept_id = instructor.dept_id)
-    AS num_instructors
-  FROM department;
-
--- Create view for courses at the Mathematic department
-CREATE VIEW math_courses AS
-SELECT * 
-  FROM course
- WHERE dept_id = 'MATH';
-
--- This join lists only courses having a prerequisite
-SELECT *
-  FROM math_courses NATURAL JOIN prereq;
- 
--- This join lists all courses, and puts NULL if there is no prerequisite
-SELECT *
-  FROM math_courses NATURAL LEFT OUTER JOIN prereq;
-
-----------------------------------------------------------------------
--- EXAMPLES FOR LECTURE 12
-----------------------------------------------------------------------
-
--- Examples of using scalar functions
-SELECT RANDOM() AS 'RANDOM',
-       ABS(-42) AS 'ABS',
-  LENGTH('SQL') AS 'LENGTH';
-
--- Examples of using date and time functions
-SELECT DATETIME('NOW') AS 'Current date/time', 
-       DATE('NOW') AS 'Date', 
-       TIME('NOW') AS 'Time',
-       JULIANDAY('2020-12-07') - JULIANDAY('NOW')
-                 AS 'Days until exams';
-
--- Enforcing naming conventions for courses depending on the department
-CREATE TRIGGER validate_course
-    BEFORE INSERT ON course
-BEGIN
-    SELECT
-        CASE
-            WHEN NEW.dept_id = 'CS' AND 
-                (NEW.course_id NOT LIKE 'CS____' AND 
-                 NEW.course_id NOT LIKE 'IS____') THEN
-                RAISE (ABORT,'CS courses ID should start with CS or IS')
-            WHEN NEW.dept_id = 'MATH' AND 
-                 NEW.course_id NOT LIKE 'MT____' THEN
-                RAISE (ABORT,'MATH courses ID should start with MT')
-        END;
-END;
-
-INSERT INTO course
-VALUES ('MT4320', 'Ring theory', 'MATH', 15);
-
-INSERT INTO course
-VALUES ('CS5210', 'Computer algebra','CS', 15);
-
-INSERT INTO course
-VALUES ('IS5485', 'Digital humanities', 'CS', 15);
-
-SELECT * FROM course;
-
--- Logging updates of student credits
-CREATE TABLE credit_logs (
-    id INTEGER PRIMARY KEY,
-    stud_id TEXT,
-    old_credits NUMERIC,
-    new_credits NUMERIC,
-    updated_at TEXT
-);
-
-CREATE TRIGGER log_credits_update
-    AFTER UPDATE ON student
-    WHEN OLD.tot_cred <> NEW.tot_cred
-BEGIN
-	INSERT INTO credit_logs (stud_id, old_credits, new_credits, updated_at)
-         VALUES (OLD.stud_id, OLD.tot_cred, NEW.tot_cred, DATETIME('NOW')) ;
-END;
-
-SELECT * FROM student WHERE stud_id = '79879';
-UPDATE student SET tot_cred = 120 WHERE stud_id = '79879';
-SELECT * FROM student WHERE stud_id = '79879';
-SELECT * FROM credit_logs;
-
-SELECT * FROM student WHERE stud_id = '78778';
-UPDATE student SET tot_cred = 120 WHERE stud_id = '78778';
-SELECT * FROM student WHERE stud_id = '78778';
-SELECT * FROM credit_logs;
-
-

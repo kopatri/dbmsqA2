@@ -1,148 +1,3 @@
-/*
- Usage:
- - To connect to a transient in-memory database:
- 
- sqlite3 --init bookstore.sql
- 
- - To connect to a named database:
- 
- sqlite3 <name.db> --init bookstore.sql
- */
-.mode column
-.headers on
-.width 18 18 18 18 -- enforce foreign keys check
-PRAGMA foreign_keys = TRUE;
-
--- Uncomment the DROP command below if you need to reset an existing
--- database. Tables are listed in the order which allows to drop them
--- without breaking foreign key constraints.
---
--- book_id barcode generator: https://generate.plus/en/number/isbn  https://www.random.org/strings/
-/*
- DROP table order_;
- DROP table customer;
- DROP table phone_customer;
- DROP table review;
- DROP table book;
- DROP table genre;
- DROP table edition_;
- DROP table contains;
- DROP table supplies;
- DROP table supplier;
- DROP table phone_supplier;
- */
-----------------------------------------------------------------------
--- DECLARATIONS
-----------------------------------------------------------------------
-CREATE TABLE order_ (
-  order_id CHAR(10),
-  street VARCHAR(50),
-  city VARCHAR(50),
-  postcode VARCHAR(30),
-  country VARCHAR(50),
-  date_ordered DATE NOT NULL,
-  date_delivered DATE NOT NULL,
-  customer_id CHAR(10),
-  PRIMARY KEY (order_id),
-  FOREIGN KEY (customer_id) REFERENCES customer
-  ON DELETE CASCADE
-  ON UPDATE CASCADE
-);
-
-CREATE TABLE customer (
-  customer_id CHAR(10),
-  customer_name VARCHAR(50),
-  email VARCHAR(50),
-  street VARCHAR(50),
-  city VARCHAR(50),
-  postcode VARCHAR(30),
-  country VARCHAR(30),
-  PRIMARY KEY (customer_id)
-);
-
-CREATE TABLE phone_customer(
-  customer_id CHAR(10),
-  phone_type VARCHAR(10),
-  phone_number VARCHAR(30),
-  PRIMARY KEY (customer_id, phone_type, phone_number),
-  FOREIGN KEY (customer_id) REFERENCES customer
-  ON DELETE CASCADE
-  ON UPDATE CASCADE
-);
-
-CREATE TABLE review(
-  customer_id CHAR(10),
-  book_id CHAR(13),
-  rating VARCHAR(1),
-  PRIMARY KEY (customer_id, book_id),
-  FOREIGN KEY (customer_id) REFERENCES customer,
-  FOREIGN KEY (book_id) REFERENCES book
-);
-
-CREATE TABLE book(
-  book_id CHAR(13),
-  title VARCHAR(50),
-  author VARCHAR(50),
-  publisher VARCHAR(50),
-  PRIMARY KEY (book_id)
-);
-
-CREATE TABLE genre(
-  book_id CHAR(13),
-  genre_description VARCHAR(50),
-  PRIMARY KEY (book_id, genre_description),
-  FOREIGN KEY (book_id) REFERENCES book
-);
-
-CREATE TABLE supplier(
-  supplier_id CHAR(10),
-  supplier_name VARCHAR(50),
-  account_no VARCHAR(10),
-  PRIMARY KEY (supplier_id)
-);
-
-CREATE TABLE phone_supplier(
-  supplier_id CHAR(10),
-  phone VARCHAR(30),
-  PRIMARY KEY (supplier_id),
-  FOREIGN KEY (supplier_id) REFERENCES supplier
-  ON DELETE CASCADE
-  ON UPDATE CASCADE
-);
-
-CREATE TABLE edition_ (
-  book_id CHAR(13),
-  book_edition VARCHAR(20),
-  book_type VARCHAR(9), --(check book_type='hardcover' or book_type='paperback' or book_type='audiobook')
-  price NUMERIC(4, 2),
-  quantity_in_stock INTEGER,
-  PRIMARY KEY (book_edition, book_type, book_id),
-  FOREIGN KEY (book_id) REFERENCES book
-  ON DELETE CASCADE
-  ON UPDATE CASCADE
-);
-
-CREATE TABLE contains (
-  book_id CHAR(13),
-  order_id CHAR (10),
-  book_edition VARCHAR(20),
-  book_type VARCHAR(9),
-  PRIMARY KEY (book_id, order_id, book_edition, book_type),
-  FOREIGN KEY (order_id) REFERENCES order_,
-  FOREIGN KEY (book_id, book_edition, book_type) REFERENCES edition_
-);
-
-CREATE TABLE supplies (
-  book_id CHAR(13),
-  supplier_id CHAR(10),
-  book_edition VARCHAR(20),
-  book_type VARCHAR(9),
-  supply_price NUMERIC(4, 2),
-  PRIMARY KEY (book_id, supplier_id, book_edition, book_type),
-  FOREIGN KEY (supplier_id) REFERENCES supplier,
-  FOREIGN KEY (book_id, book_edition, book_type) REFERENCES edition_
-);
-
 INSERT INTO customer
 VALUES
   ('CU12345678','Mike Miller','mikemiller@gmail.com','2Waterloo','Edinburgh','EH1 3EG','Scotland'),
@@ -155,7 +10,6 @@ VALUES
   ('CU77777777','Maciej Jones','MaciejJones@armyspy.com','76 Golf Road','SWINTON','YO17 3HX','England'),
   ('CU88888888','Ahmed Robertson','AhmedRobertson@rhyta.com','65 Rowland Rd','ORMISCAIG','IV22 6FL','England'),
   ('CU99999999','Zac Findlay','ZacFindlay@hotmail.com','78 High Street','ASHBY FOLVILLE','LE14 0JY','England');
-  
 
 INSERT INTO order_
 VALUES
@@ -183,6 +37,8 @@ VALUES
   ('CU88888888', 'private', '+4478 6729 5567'), 
   ('CU99999999', 'business', '+4470 6336 3932'); 
 
+
+
 INSERT INTO book
 VALUES
   ('0-6879-4771-5','Database Design','Fred Heypen','Ultimate Books'),
@@ -196,6 +52,7 @@ VALUES
   ('0-9413-7369-1','The searcher','Hubert Murray','Dark Books'),
   ('0-5217-6095-2','Walk the wire','Thomas Walker','Dark Books');
 
+
 INSERT INTO review
 VALUES
   ("CU12345678", '0-6879-4771-5', 5),
@@ -208,6 +65,7 @@ VALUES
   ("CU33333333", '0-4802-1161-2', 4),
   ("CU99999999", '0-1420-0322-0', 3),
   ("CU55555555", '0-1420-0322-0', 1);
+
 
 INSERT INTO genre
 VALUES
