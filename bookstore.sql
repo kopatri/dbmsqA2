@@ -146,9 +146,8 @@ VALUES
   ('CU55555555','Franciszek Thompson','FranciszekThompson@hotmail.com','56 Ash Lane','YSBYTY IFAN','LL24 9BT','Wales'),
   ('CU66666666','Kenzie Bruce','KenzieBruce@hotmail.com','15 Jubilee Drive','CATTON','NR6 8SU','England'),
   ('CU77777777','Maciej Jones','MaciejJones@armyspy.com','76 Golf Road','SWINTON','YO17 3HX','England'),
-  ('CU88888888','Ahmed Robertson','AhmedRobertson@rhyta.com','65 Rowland Rd','ORMISCAIG','IV22 6FL','England');
-
-  
+  ('CU88888888','Ahmed Robertson','AhmedRobertson@rhyta.com','65 Rowland Rd','ORMISCAIG','IV22 6FL','England'),
+  ('CU99999999','Zac Findlay','ZacFindlay@hotmail.com','78 High Street','ASHBY FOLVILLE','LE14 0JY','England');
 
 INSERT INTO order_
 VALUES
@@ -160,19 +159,23 @@ VALUES
   ('OR55555555','56 Ash Lane','YSBYTY IFAN','LL24 9BT','Wales','2020-01-29','2020-02-05','CU55555555'),
   ('OR66666666','15 Jubilee Drive','CATTON','NR6 8SU','England','2020-05-29','2020-06-06','CU66666666'),
   ('OR77777777','76 Golf Road','SWINTON','YO17 3HX','England','2020-07-19','2020-07-26','CU77777777'),
-  ('OR88888888','65 Rowland Rd','ORMISCAIG','IV22 6FL','England','2020-07-23','2020-07-29','CU88888888');
+  ('OR88888888','65 Rowland Rd','ORMISCAIG','IV22 6FL','England','2020-07-23','2020-07-29','CU88888888'),
+  ('OR99999999','78 High Street','ASHBY FOLVILLE','LE14 0JY','England','2020-07-29','2020-08-09','CU99999999');
 
  INSERT INTO phone_customer
 VALUES
-  ('CU12345678', 'private', '+4413 1608 1133'),
-  ('CU11111111', 'business', '+4477 1112 5810'),
-  ('CU22222222', 'business', '+4479 2310 7845'),
-  ('CU33333333', 'private', '+4478 2108 1899'),
-  ('CU44444444', 'business', '+4478 1111 7876'),
-  ('CU55555555', 'private', '+4470 0881 5578'),
+  ('CU12345678', 'private', '+4413 1608 1133'), 
+  ('CU11111111', 'business', '+4477 1112 5810'), 
+  ('CU22222222', 'business', '+4479 2310 7845'), 
+  ('CU33333333', 'private', '+4478 2108 1899'), 
+  ('CU44444444', 'business', '+4478 1111 7876'), 
+  ('CU55555555', 'private', '+4470 0881 5578'), 
   ('CU66666666', 'private', '+4470 7500 3637'),
-  ('CU77777777', 'business', '+4479 0644 1370'),
-  ('CU88888888', 'private', '+4478 6729 5567'); 
+  ('CU77777777', 'business', '+4479 0644 1370'), 
+  ('CU88888888', 'private', '+4478 6729 5567'), 
+  ('CU99999999', 'business', '+4470 6336 3932'); 
+
+
 
 INSERT INTO book
 VALUES
@@ -184,7 +187,9 @@ VALUES
   ('0-6859-0667-1','One vote away','Euan Bell','Light Books'),
   ('0-4802-1161-2','A time for mercy','Evan Ross','Shine Books'),
   ('0-6598-5648-4','The return','Caleb McGregor','Shine Books'),
-  ('0-9413-7369-1','The searcher','Hubert Murray','Dark Books'); 
+  ('0-9413-7369-1','The searcher','Hubert Murray','Dark Books'),
+  ('0-5217-6095-2','Walk the wire','Thomas Walker','Dark Books');
+
 
 INSERT INTO review
 VALUES
@@ -196,7 +201,9 @@ VALUES
   ("CU55555555", '0-6859-0667-1', 5),
   ("CU66666666", '0-4802-1161-2', 3),
   ("CU77777777", '0-6598-5648-4', 4),
-  ("CU88888888", '0-1420-0322-0', 3);
+  ("CU88888888", '0-1420-0322-0', 3),
+  ("CU99999999", '0-5217-6095-2', 1);
+
 
 INSERT INTO genre
 VALUES
@@ -208,7 +215,8 @@ VALUES
   ('0-6859-0667-1', 'Innovation and Creativity'),
   ('0-4802-1161-2', 'Innovation and Creativity'),
   ('0-6598-5648-4', 'Management'),
-  ('0-9413-7369-1', 'Information Technology');
+  ('0-9413-7369-1', 'Information Technology'),
+  ('0-5217-6095-2', 'Information Technology');
 
 INSERT INTO supplier
 VALUES
@@ -220,7 +228,8 @@ VALUES
   ('SUP5555555', 'Oberlo', 'ACC5555555'),
   ('SUP6666666', 'LibrarySale', 'ACC6666666'),
   ('SUP7777777', 'Bookdepot', 'ACC7777777'),
-  ('SUP8888888', 'Thalia', 'ACC8888888');
+  ('SUP8888888', 'Thalia', 'ACC8888888'),
+  ('SUP9999999', 'Biggestbook', 'ACC9999999');
 
 INSERT INTO phone_supplier
 VALUES
@@ -232,7 +241,8 @@ VALUES
   ('SUP5555555', '+4479 7413 5810'),
   ('SUP6666666', '+4479 6977 9493'),
   ('SUP7777777', '+4479 3022 4247'),
-  ('SUP8888888', '+4478 0612 7863');
+  ('SUP8888888', '+4478 0612 7863'),
+  ('SUP9999999', '+4477 5463 0880');
 
 INSERT INTO edition_
 VALUES
@@ -244,7 +254,8 @@ VALUES
   ('0-6859-0667-1','Edition9','hardcover',79.99,9),
   ('0-4802-1161-2','Edition5','hardcover',69.99,6),
   ('0-6598-5648-4','Edition6','audiobook',129.99,12),
-  ('0-9413-7369-1','Edition3','audiobook',69.99,2);
+  ('0-9413-7369-1','Edition3','audiobook',69.99,2),
+  ('0-5217-6095-2','Edition8','paperback',49.99,2);
 
 INSERT INTO contains
 VALUES
@@ -256,7 +267,8 @@ VALUES
   ('0-6859-0667-1','OR55555555','Edition9','hardcover'),
   ('0-4802-1161-2','OR66666666','Edition5','hardcover'),
   ('0-6598-5648-4','OR77777777','Edition6','audiobook'),
-  ('0-9413-7369-1','OR88888888','Edition3','audiobook');
+  ('0-9413-7369-1','OR88888888','Edition3','audiobook'),
+  ('0-5217-6095-2','OR99999999','Edition8','paperback');
 
 INSERT INTO supplies
 VALUES
@@ -268,4 +280,5 @@ VALUES
   ('0-6859-0667-1','SUP5555555','Edition9','hardcover',39.99),
   ('0-4802-1161-2','SUP6666666','Edition5','hardcover',49.99),
   ('0-6598-5648-4','SUP7777777','Edition6','audiobook',89.99),
-  ('0-9413-7369-1','SUP8888888','Edition3','audiobook',39.99);
+  ('0-9413-7369-1','SUP8888888','Edition3','audiobook',39.99),
+  ('0-5217-6095-2','SUP9999999','Edition8','paperback',29.99);

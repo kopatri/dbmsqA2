@@ -142,5 +142,5 @@ VALUES
   ('0-6859-0667-1','SUP5555555','Edition9','hardcover',39.99),
   ('0-4802-1161-2','SUP6666666','Edition5','hardcover',49.99),
   ('0-6598-5648-4','SUP7777777','Edition6','audiobook',89.99),
-  ('0-9413-7369-1','SUP8888888','Edition3','audiobock',39.99),
+  ('0-9413-7369-1','SUP8888888','Edition3','audiobook',39.99),
   ('0-5217-6095-2','SUP9999999','Edition8','paperback',29.99);
