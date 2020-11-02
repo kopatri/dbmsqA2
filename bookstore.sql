@@ -155,7 +155,7 @@ VALUES
 
 INSERT INTO order_
 VALUES
-  ('OR12345678','2Waterloo','Edinburgh','EH1 3EG','Scotland','2016-01-01','2016-01-05','CU12345678'),
+  ('OR12345678','2 Waterloo','Edinburgh','EH1 3EG','Scotland','2016-01-01','2016-01-05','CU12345678'),
   ('OR11111111','4 Waterloo Street','Edinburgh','EH1 3EG','Scotland','2019-04-04','2019-04-07','CU11111111'),
   ('OR22222222','42 Lyon Street','Edinburgh','EH1 3EG','Scotland','2020-08-11','2020-08-14','CU22222222'),
   ('OR33333333','50 Scrimshire Lane','SHWICKEN','PE32 7YH','Scotland','2017-12-12','2017-12-15','CU33333333'),
@@ -319,13 +319,13 @@ SELECT * FROM supplies;
 ----------------------------------------------------------------------
 
 --Query 1
---SELECT book_id FROM Book WHERE publisher = "Ultimate Books" 
---INTERSECT SELECT book_id FROM genre 
---WHERE genre_description ="Science and Technology";
+--SELECT * FROM book NATURAL JOIN genre 
+--WHERE book.publisher = "Ultimate Books" 
+--AND genre.genre_description = "Science and Technology";
 
 --Query 2
--- SELECT * FROM book NATURAL JOIN genre
--- WHERE book.publisher = 'Ultimate Books' 
--- AND genre.genre_description = 'Science and Technology';
+-- SELECT * FROM order_
+-- WHERE city = "Edinburgh" AND date_ordered > '2015-12-31'
+-- ORDER BY date_ordered DESC;
 
 --Query 3
