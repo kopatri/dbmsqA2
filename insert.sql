@@ -135,12 +135,12 @@ VALUES
 INSERT INTO supplies
 VALUES
   ('0-6879-4771-5','SUP1234567','Edition3','hardcover',9.99),
-  ('0-7185-5614-3','SUP1234567','Edition1','paperback',19.99),
-  ('0-4404-6826-4','SUP1234567','Edition4','audiobook',29.99),
-  ('0-9263-6827-3','SUP1234567','Edition1','audiobook',29.99),
-  ('0-1420-0322-0','SUP1234567','Edition5','paperback',39.99),
-  ('0-6859-0667-1','SUP1234567','Edition9','hardcover',39.99),
-  ('0-4802-1161-2','SUP1234567','Edition5','hardcover',49.99),
-  ('0-6598-5648-4','SUP1234567','Edition6','audiobook',89.99),
-  ('0-9413-7369-1','SUP1234567','Edition3','audiobock',39.99),
-  ('0-5217-6095-2','SUP1234567','Edition8','paperback',29.99);
+  ('0-7185-5614-3','SUP1111111','Edition1','paperback',19.99),
+  ('0-4404-6826-4','SUP2222222','Edition4','audiobook',29.99),
+  ('0-9263-6827-3','SUP3333333','Edition1','audiobook',29.99),
+  ('0-1420-0322-0','SUP4444444','Edition5','paperback',39.99),
+  ('0-6859-0667-1','SUP5555555','Edition9','hardcover',39.99),
+  ('0-4802-1161-2','SUP6666666','Edition5','hardcover',49.99),
+  ('0-6598-5648-4','SUP7777777','Edition6','audiobook',89.99),
+  ('0-9413-7369-1','SUP8888888','Edition3','audiobock',39.99),
+  ('0-5217-6095-2','SUP9999999','Edition8','paperback',29.99);
