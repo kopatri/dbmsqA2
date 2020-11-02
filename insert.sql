@@ -37,8 +37,6 @@ VALUES
   ('CU88888888', 'private', '+4478 6729 5567'), 
   ('CU99999999', 'business', '+4470 6336 3932'); 
 
-
-
 INSERT INTO book
 VALUES
   ('0-6879-4771-5','Database Design','Fred Heypen','Ultimate Books'),
