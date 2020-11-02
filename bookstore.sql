@@ -32,7 +32,7 @@ PRAGMA foreign_keys = TRUE;
  DROP table phone_supplier;
  */
 ----------------------------------------------------------------------
--- DECLARATIONS
+-- Declarations
 ----------------------------------------------------------------------
 CREATE TABLE customer (
   customer_id CHAR(10),
@@ -135,6 +135,10 @@ CREATE TABLE supplies (
   FOREIGN KEY (supplier_id) REFERENCES supplier,
   FOREIGN KEY (book_id, book_edition, book_type) REFERENCES edition_(book_id, book_edition, book_type)
 );
+
+----------------------------------------------------------------------
+-- Test data
+----------------------------------------------------------------------
 
 INSERT INTO customer
 VALUES
@@ -282,3 +286,34 @@ VALUES
   ('0-6598-5648-4','SUP7777777','Edition6','audiobook',89.99),
   ('0-9413-7369-1','SUP8888888','Edition3','audiobook',39.99),
   ('0-5217-6095-2','SUP9999999','Edition8','paperback',29.99);
+
+----------------------------------------------------------------------
+-- Visual data control of the tables
+----------------------------------------------------------------------
+
+
+SELECT * FROM customer;
+
+SELECT * FROM order_;
+
+SELECT * FROM phone_customer;
+
+SELECT * FROM book;
+
+SELECT * FROM review;
+
+SELECT * FROM genre;
+
+SELECT * FROM supplier;
+
+SELECT * FROM phone_supplier;
+
+SELECT * FROM edition_;
+
+SELECT * FROM contains;
+
+SELECT * FROM supplies;
+
+----------------------------------------------------------------------
+-- Queries task 3
+----------------------------------------------------------------------
