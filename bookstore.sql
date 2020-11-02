@@ -34,6 +34,17 @@ PRAGMA foreign_keys = TRUE;
 ----------------------------------------------------------------------
 -- DECLARATIONS
 ----------------------------------------------------------------------
+CREATE TABLE customer (
+  customer_id CHAR(10),
+  customer_name VARCHAR(50),
+  email VARCHAR(50),
+  street VARCHAR(50),
+  city VARCHAR(50),
+  postcode VARCHAR(30),
+  country VARCHAR(30),
+  PRIMARY KEY (customer_id)
+);
+
 CREATE TABLE order_ (
   order_id CHAR(10),
   street VARCHAR(50),
@@ -47,16 +58,6 @@ CREATE TABLE order_ (
   FOREIGN KEY (customer_id) REFERENCES customer
 );
 
-CREATE TABLE customer (
-  customer_id CHAR(10),
-  customer_name VARCHAR(50),
-  email VARCHAR(50),
-  street VARCHAR(50),
-  city VARCHAR(50),
-  postcode VARCHAR(30),
-  country VARCHAR(30),
-  PRIMARY KEY (customer_id)
-);
 
 CREATE TABLE phone_customer(
   customer_id CHAR(10),
@@ -137,45 +138,56 @@ CREATE TABLE supplies (
 
 INSERT INTO customer
 VALUES
-  ('CU12345678','Mike Miller','mikemiller@gmail.com','2Waterloo','Edinburgh','EH1 3EG','Scotland');
+  ('CU12345678','Mike Miller','mikemiller@gmail.com','2Waterloo','Edinburgh','EH1 3EG','Scotland'),
+  ('CU11111111','Franz Ferdinand','franzf@gmail.com','4 Waterloo Street','Edinburgh','EH1 3EG','Scotland');
   
 
 INSERT INTO order_
 VALUES
-  ('OR12345678','2Waterloo','Edinburgh','EH1 3EG','Scotland','2018-10-10','2018-10-15','CU12345678');
+  ('OR12345678','2Waterloo','Edinburgh','EH1 3EG','Scotland','2018-10-10','2018-10-15','CU12345678'),
+  ('OR11111111','4 Waterloo Street','Edinburgh','EH1 3EG','Scotland','2019-04-04','2019-04-07','CU11111111');
 
  INSERT INTO phone_customer
 VALUES
-  ('CU12345678', 'private', '+4413 1608 1133'); 
+  ('CU12345678', 'private', '+4413 1608 1133'),
+  ('CU11111111', 'business', '+4477 1112 5810'); 
 
 INSERT INTO book
 VALUES
-  ('0-6879-4771-5','Database Design','Fred Heypen','Ultimate Books');
+  ('0-6879-4771-5','Database Design','Fred Heypen','Ultimate Books'),
+  ('0-7185-5614-3','Greenlights','Charles Johnston','Ultimate Books');
 
 INSERT INTO review
 VALUES
-  ("CU12345678", '0-6879-4771-5', 5);
+  ("CU12345678", '0-6879-4771-5', 5),
+  ("CU11111111", '0-7185-5614-3', 3);
 
 INSERT INTO genre
 VALUES
-  ('0-6879-4771-5', 'Science and Technology');
+  ('0-6879-4771-5', 'Science and Technology'),
+  ('0-7185-5614-3', 'Science and Technology');
 
 INSERT INTO supplier
 VALUES
-  ('SUP1234567', 'Libsupply Limited', 'ACC1234567');
+  ('SUP1234567', 'Libsupply Limited', 'ACC1234567'),
+  ('SUP1111111', 'Alibaba', 'ACC1111111');
 
 INSERT INTO phone_supplier
 VALUES
-  ('SUP1234567', '+4477 7487 3428');
+  ('SUP1234567', '+4477 7487 3428'),
+  ('SUP1111111', '+4477 7741 4268');
 
 INSERT INTO edition_
 VALUES
-  ('0-6879-4771-5','Edition3','hardcover',29.99,10);
+  ('0-6879-4771-5','Edition3','hardcover',29.99,10),
+  ('0-7185-5614-3','Edition1','paperback',39.99,9);
 
 INSERT INTO contains
 VALUES
-  ('0-6879-4771-5','OR12345678','Edition3','hardcover');
+  ('0-6879-4771-5','OR12345678','Edition3','hardcover'),
+  ('0-7185-5614-3','OR11111111','Edition1','paperback');
 
 INSERT INTO supplies
 VALUES
-  ('0-6879-4771-5','SUP1234567','Edition3','hardcover',9.99);
+  ('0-6879-4771-5','SUP1234567','Edition3','hardcover',9.99),
+  ('0-7185-5614-3','SUP1111111','Edition1','paperback',19.99);
