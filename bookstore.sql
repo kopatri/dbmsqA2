@@ -17,7 +17,9 @@ PRAGMA foreign_keys = TRUE;
 -- database. Tables are listed in the order which allows to drop them
 -- without breaking foreign key constraints.
 --
--- book_id barcode generator: https://generate.plus/en/number/isbn  https://www.random.org/strings/
+-- book_id barcode generator: https://generate.plus/en/number/isbn  
+-- https://www.random.org/strings/
+-- https://www.fakenamegenerator.com/gen-random-en-uk.php
 /*
  DROP table order_;
  DROP table customer;
@@ -233,7 +235,8 @@ VALUES
   ('SUP6666666', 'LibrarySale', 'ACC6666666'),
   ('SUP7777777', 'Bookdepot', 'ACC7777777'),
   ('SUP8888888', 'Thalia', 'ACC8888888'),
-  ('SUP9999999', 'Biggestbook', 'ACC9999999');
+  ('SUP9999999', 'Biggestbook', 'ACC9999999'),
+  ('SUP8888822', 'NHBooks', 'ACC8888822');
 
 INSERT INTO phone_supplier
 VALUES
@@ -246,7 +249,8 @@ VALUES
   ('SUP6666666', '+4479 6977 9493'),
   ('SUP7777777', '+4479 3022 4247'),
   ('SUP8888888', '+4478 0612 7863'),
-  ('SUP9999999', '+4477 5463 0880');
+  ('SUP9999999', '+4477 5463 0880'),
+  ('SUP8888822', '+4479 6400 9414');
 
 INSERT INTO edition_
 VALUES
@@ -285,7 +289,8 @@ VALUES
   ('0-4802-1161-2','SUP6666666','Edition5','hardcover',49.99),
   ('0-6598-5648-4','SUP7777777','Edition6','audiobook',89.99),
   ('0-9413-7369-1','SUP8888888','Edition3','audiobook',39.99),
-  ('0-5217-6095-2','SUP9999999','Edition8','paperback',29.99);
+  ('0-5217-6095-2','SUP9999999','Edition8','paperback',29.99),
+  ('0-9413-7369-1','SUP8888822','Edition3','audiobook',34.99);
 
 ----------------------------------------------------------------------
 -- Visual data control of the tables
