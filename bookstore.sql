@@ -236,7 +236,8 @@ VALUES
   ('SUP7777777', 'Bookdepot', 'ACC7777777'),
   ('SUP8888888', 'Thalia', 'ACC8888888'),
   ('SUP9999999', 'Biggestbook', 'ACC9999999'),
-  ('SUP8888822', 'NHBooks', 'ACC8888822');
+  ('SUP8888822', 'NHBooks', 'ACC8888822'),
+  ('SUP9999922', 'LowPrice Books', 'ACC9999922');
 
 INSERT INTO phone_supplier
 VALUES
@@ -250,7 +251,8 @@ VALUES
   ('SUP7777777', '+4479 3022 4247'),
   ('SUP8888888', '+4478 0612 7863'),
   ('SUP9999999', '+4477 5463 0880'),
-  ('SUP8888822', '+4479 6400 9414');
+  ('SUP8888822', '+4479 6400 9414'),
+  ('SUP9999922', '+4479 1747 6093');
 
 INSERT INTO edition_
 VALUES
@@ -290,7 +292,8 @@ VALUES
   ('0-6598-5648-4','SUP7777777','Edition6','audiobook',89.99),
   ('0-9413-7369-1','SUP8888888','Edition3','audiobook',39.99),
   ('0-5217-6095-2','SUP9999999','Edition8','paperback',29.99),
-  ('0-9413-7369-1','SUP8888822','Edition3','audiobook',34.99);
+  ('0-9413-7369-1','SUP8888822','Edition3','audiobook',34.99),  
+  ('0-5217-6095-2','SUP9999922','Edition8','paperback',24.99);
 
 ----------------------------------------------------------------------
 -- Visual data control of the tables
