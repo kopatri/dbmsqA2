@@ -10,10 +10,10 @@ ORDER BY date_ordered DESC;
 
 --Query 3
 SELECT book_id, book_edition, book_type, quantity_in_stock, supply_price, supplier_id, account_no 
-as GREOIGOIRE FROM edition_ 
+FROM edition_ 
 NATURAL JOIN supplies 
 NATURAL JOIN supplier 
 WHERE quantity_in_stock < 5 
-GROUP BY book_id;
-
+GROUP BY book_id
+HAVING MIN (supply_price);
 /*Own queries*/
