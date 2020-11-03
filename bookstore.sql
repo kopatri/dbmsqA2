@@ -38,7 +38,7 @@ PRAGMA foreign_keys = TRUE;
 ----------------------------------------------------------------------
 CREATE TABLE customer (
   customer_id CHAR(10),
-  customer_name VARCHAR(50),
+  customer_name VARCHAR(50) NOT NULL,
   email VARCHAR(50),
   street VARCHAR(50),
   city VARCHAR(50),
@@ -54,10 +54,11 @@ CREATE TABLE order_ (
   postcode VARCHAR(30),
   country VARCHAR(50),
   date_ordered DATE NOT NULL,
-  date_delivered DATE NOT NULL,
+  date_delivered DATE,
   customer_id CHAR(10),
   PRIMARY KEY (order_id),
   FOREIGN KEY (customer_id) REFERENCES customer
+  ON UPDATE CASCADE
 );
 
 
@@ -67,21 +68,25 @@ CREATE TABLE phone_customer(
   phone_number VARCHAR(30),
   PRIMARY KEY (customer_id, phone_type, phone_number),
   FOREIGN KEY (customer_id) REFERENCES customer
+  ON DELETE CASCADE 
+  ON UPDATE CASCADE
 );
+
 
 CREATE TABLE review(
   customer_id CHAR(10),
   book_id CHAR(13),
-  rating VARCHAR(1),
+  rating INTEGER NOT NULL CHECK(rating='1' or rating='2' or rating='3' or rating='4' or rating='5'),
   PRIMARY KEY (customer_id, book_id),
   FOREIGN KEY (customer_id) REFERENCES customer,
   FOREIGN KEY (book_id) REFERENCES book
+  ON UPDATE CASCADE
 );
 
 CREATE TABLE book(
   book_id CHAR(13),
-  title VARCHAR(50),
-  author VARCHAR(50),
+  title VARCHAR(50) NOT NULL,
+  author VARCHAR(50) NOT NULL,
   publisher VARCHAR(50),
   PRIMARY KEY (book_id)
 );
@@ -91,11 +96,12 @@ CREATE TABLE genre(
   genre_description VARCHAR(50),
   PRIMARY KEY (book_id, genre_description),
   FOREIGN KEY (book_id) REFERENCES book
+  ON UPDATE CASCADE
 );
 
 CREATE TABLE supplier(
   supplier_id CHAR(10),
-  supplier_name VARCHAR(50),
+  supplier_name VARCHAR(50) NOT NULL,
   account_no VARCHAR(10),
   PRIMARY KEY (supplier_id)
 );
@@ -105,16 +111,19 @@ CREATE TABLE phone_supplier(
   phone VARCHAR(30),
   PRIMARY KEY (supplier_id),
   FOREIGN KEY (supplier_id) REFERENCES supplier
+  ON DELETE CASCADE 
+  ON UPDATE CASCADE
 );
 
 CREATE TABLE edition_ (
   book_id CHAR(13),
   book_edition VARCHAR(20),
-  book_type VARCHAR(9), -- (check type)
-  price NUMERIC(4, 2),
-  quantity_in_stock INTEGER,
+  book_type VARCHAR(9) CHECK(book_type = 'audiobook' or book_type = 'hardcover' or book_type = 'paperback'),
+  price NUMERIC(3, 2) NOT NULL,
+  quantity_in_stock INTEGER DEFAULT 0,
   PRIMARY KEY (book_id, book_edition, book_type),
   FOREIGN KEY (book_id) REFERENCES book
+  ON UPDATE CASCADE
 );
 
 CREATE TABLE contains (
@@ -125,6 +134,7 @@ CREATE TABLE contains (
   PRIMARY KEY (book_id, order_id, book_edition, book_type),
   FOREIGN KEY (order_id) REFERENCES order_,
   FOREIGN KEY (book_id, book_edition, book_type) REFERENCES edition_(book_id, book_edition, book_type)
+  ON UPDATE CASCADE
 );
 
 CREATE TABLE supplies (
@@ -132,10 +142,11 @@ CREATE TABLE supplies (
   supplier_id CHAR(10),
   book_edition VARCHAR(20),
   book_type VARCHAR(9),
-  supply_price NUMERIC(4, 2),
+  supply_price NUMERIC(3, 2) NOT NULL,
   PRIMARY KEY (book_id, supplier_id,book_edition, book_type),
   FOREIGN KEY (supplier_id) REFERENCES supplier,
   FOREIGN KEY (book_id, book_edition, book_type) REFERENCES edition_(book_id, book_edition, book_type)
+  ON UPDATE CASCADE
 );
 
 ----------------------------------------------------------------------
@@ -199,16 +210,16 @@ VALUES
 
 INSERT INTO review
 VALUES
-  ("CU12345678", '0-6879-4771-5', 5),
-  ("CU11111111", '0-7185-5614-3', 3),
-  ("CU22222222", '0-4404-6826-4', 2),
-  ("CU33333333", '0-9263-6827-3', 2),
-  ("CU44444444", '0-1420-0322-0', 4),
-  ("CU55555555", '0-6859-0667-1', 5),
-  ("CU66666666", '0-4802-1161-2', 3),
-  ("CU77777777", '0-6598-5648-4', 4),
-  ("CU88888888", '0-1420-0322-0', 3),
-  ("CU99999999", '0-5217-6095-2', 1);
+  ('CU12345678', '0-6879-4771-5', 5),
+  ('CU11111111', '0-7185-5614-3', 3),
+  ('CU22222222', '0-4404-6826-4', 2),
+  ('CU33333333', '0-9263-6827-3', 2),
+  ('CU44444444', '0-1420-0322-0', 4),
+  ('CU55555555', '0-6859-0667-1', 5),
+  ('CU66666666', '0-4802-1161-2', 3),
+  ('CU77777777', '0-6598-5648-4', 4),
+  ('CU88888888', '0-1420-0322-0', 3),
+  ('CU99999999', '0-5217-6095-2', 1);
 
 
 INSERT INTO genre
@@ -265,7 +276,7 @@ VALUES
   ('0-4802-1161-2','Edition5','hardcover',69.99,6),
   ('0-6598-5648-4','Edition6','audiobook',129.99,12),
   ('0-9413-7369-1','Edition3','audiobook',69.99,2),
-  ('0-5217-6095-2','Edition8','paperback',49.99,2);
+  ('0-5217-6095-2','Edition8','paperback',49.99,1);
 
 INSERT INTO contains
 VALUES
@@ -326,52 +337,24 @@ SELECT * FROM supplies;
 -- Queries task 3
 ----------------------------------------------------------------------
 
+SELECT 'Query 1' AS 'Task 3';
 --Query 1
-/*
 SELECT * FROM book NATURAL JOIN genre 
 WHERE book.publisher = "Ultimate Books" 
 AND genre.genre_description = "Science and Technology";
-*/
+
+SELECT 'Query 2' AS 'Task 3';
 --Query 2
-/*
 SELECT * FROM order_
 WHERE city = "Edinburgh" AND date_ordered > '2015-12-31'
 ORDER BY date_ordered DESC;
-*/
+
+SELECT 'Query 3' AS 'Task 3';
 --Query 3
-
-
---Own Query 1 - Business Contact from England
-/*
-SELECT * FROM customer NATURAL JOIN phone_customer
-WHERE customer.country = 'England'
-AND phone_customer.phone_type = 'business';
-*/
-
---Own Query 2 - Late deliveries
-/*
-SELECT * FROM order_ 
-WHERE date_ordered - date_delivered < 2;
-*/
-
---Own Query 2 - Late deliveres in Wales
-/*
-SELECT * FROM order_ NATURAL JOIN customer
-WHERE date_ordered - date_delivered < 4
-AND customer.country = 'Wales';
-*/
-
---high margin
-/*
-SELECT * FROM edition_ NATURAL JOIN supplies
-WHERE edition_.price - supplies.supply_price > 5
-ORDER BY edition_.quantity_in_stock;
-*/
--- ORDER BY supplies.supply_price
-
--- not yet delivered, still needs test
-/*
-SELECT * FROM order_
-WHERE date_delivered = NULL
-AND date('now') - date_ordered > 15;
-*/
+SELECT book_id, book_edition, book_type, quantity_in_stock, supply_price, supplier_id, account_no 
+FROM edition_ 
+NATURAL JOIN supplies 
+NATURAL JOIN supplier 
+WHERE quantity_in_stock < 5 
+GROUP BY book_id
+HAVING MIN (supply_price);
