@@ -176,8 +176,8 @@ VALUES
   ('OR55555555','56 Ash Lane','YSBYTY IFAN','LL24 9BT','Wales','2020-01-29','2020-02-05','CU55555555'),
   ('OR66666666','15 Jubilee Drive','CATTON','NR6 8SU','England','2020-05-29','2020-06-06','CU66666666'),
   ('OR77777777','76 Golf Road','SWINTON','YO17 3HX','England','2020-07-19','2020-07-26','CU77777777'),
-  ('OR88888888','65 Rowland Rd','ORMISCAIG','IV22 6FL','England','2020-07-23','2020-07-29','CU88888888'),
-  ('OR99999999','78 High Street','ASHBY FOLVILLE','LE14 0JY','England','2020-07-29','2020-08-09','CU99999999');
+  ('OR88888888','65 Rowland Rd','ORMISCAIG','IV22 6FL','England','2020-07-23','2020-08-29','CU88888888'),
+  ('OR99999999','78 High Street','ASHBY FOLVILLE','LE14 0JY','England','2020-07-09','2020-08-09','CU99999999');
 
  INSERT INTO phone_customer
 VALUES
@@ -270,7 +270,7 @@ VALUES
   ('0-6879-4771-5','Edition3','hardcover',29.99,10),
   ('0-7185-5614-3','Edition1','paperback',39.99,9),
   ('0-4404-6826-4','Edition4','audiobook',49.99,8),
-  ('0-9263-6827-3','Edition1','audiobook',49.99,17),
+  ('0-9263-6827-3','Edition1','audiobook',69.99,17),
   ('0-1420-0322-0','Edition5','paperback',59.99,12),
   ('0-6859-0667-1','Edition9','hardcover',79.99,9),
   ('0-4802-1161-2','Edition5','hardcover',69.99,6),
@@ -334,9 +334,9 @@ SELECT * FROM contains;
 SELECT * FROM supplies;
 
 ----------------------------------------------------------------------
--- Queries task 3
+-- Queries task 3 -high-level queries
 ----------------------------------------------------------------------
-
+/*
 SELECT 'Query 1' AS 'Task 3';
 --Query 1
 SELECT * FROM book NATURAL JOIN genre 
@@ -358,3 +358,44 @@ NATURAL JOIN supplier
 WHERE quantity_in_stock < 5 
 GROUP BY book_id
 HAVING MIN (supply_price);
+*/
+----------------------------------------------------------------------
+-- Queries task 3 - own queries
+----------------------------------------------------------------------
+
+-- high marging
+
+
+/*
+SELECT book_id, title, author, publisher, book_edition, book_type, price AS sell_price, supply_price FROM book
+NATURAL JOIN edition_
+NATURAL JOIN supplies
+WHERE edition_.price - supplies.supply_price > 30
+ORDER BY edition_.quantity_in_stock;
+*/
+
+
+----------------------------------------------------------------------
+-- Queries task 3 - own views
+----------------------------------------------------------------------
+
+/*
+SELECT customer_name, email, street, city, postcode, country, phone_type, phone_number, date_ordered FROM customer 
+NATURAL JOIN phone_customer 
+NATURAL JOIN order_
+WHERE customer.country = 'England'
+AND phone_customer.phone_type = 'business'
+ORDER BY order_.date_ordered DESC;
+*/
+
+/* not functional for , show most succesfull prices
+SELECT book_id, title, author publisher, rating 
+FROM book
+NATURAL JOIN review
+NATURAL JOIN edition_
+WHERE review.rating > 3
+ORDER BY review.rating DESC;
+*/
+
+
+
