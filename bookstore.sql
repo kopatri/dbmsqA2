@@ -334,26 +334,27 @@ SELECT * FROM supplies;
 SELECT 'Query 1' AS 'Task 3';
 --Query 1
 SELECT * FROM book NATURAL JOIN genre 
-WHERE book.publisher = "Ultimate Books" 
-AND genre.genre_description = "Science and Technology";
+WHERE book.publisher = 'Ultimate Books' 
+AND genre.genre_description = 'Science and Technology';
 
 
 SELECT 'Query 2' AS 'Task 3';
 --Query 2
 SELECT * FROM order_
-WHERE city = "Edinburgh" AND date_ordered > '2015-12-31'
+WHERE city = 'Edinburgh' AND date_ordered > '2015-12-31'
 ORDER BY date_ordered DESC;
 
 
 SELECT 'Query 3' AS 'Task 3';
 --Query 3
-SELECT book_id, book_edition, book_type, quantity_in_stock, supply_price, supplier_id, account_no 
+SELECT book_id, book_edition, book_type, quantity_in_stock, supplier_id, supplier_name, account_no, supply_price
 FROM edition_ 
 NATURAL JOIN supplies 
 NATURAL JOIN supplier 
 WHERE quantity_in_stock < 5 
 GROUP BY book_id
 HAVING MIN (supply_price);
+
 
 ----------------------------------------------------------------------
 -- Queries task 3 - own queries
