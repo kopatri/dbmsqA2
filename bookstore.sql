@@ -370,16 +370,15 @@ AND customer.country = 'Wales';
 
 
 SELECT 'Own query 2' AS 'Task 3';
--- Own query 2 --find high priced books and count them
-SELECT COUNT (quantity_in_stock) AS high_priced_books
+-- Own query 2 -- find high priced books and count them
+SELECT COUNT (price) AS high_priced_books
 FROM edition_
-WHERE edition_.price > 50
-ORDER BY edition_.price ASC;
+WHERE edition_.price > 50;
 
 
 SELECT 'Own query 3' AS 'Task 3';
--- Own query 3 -- find book which customer heard
-SELECT book_id, title AS Matched_title , author, publisher, book_edition, book_type, price, quantity_in_stock FROM book
+-- Own query 3 -- find books when customer knows part of the title
+SELECT book_id, title AS found_title , author, publisher, book_edition, book_type, price, quantity_in_stock FROM book
 NATURAL JOIN edition_
 WHERE book.title LIKE '%the%'
 ORDER BY edition_.quantity_in_stock ASC;
