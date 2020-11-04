@@ -330,7 +330,7 @@ SELECT * FROM supplies;
 ----------------------------------------------------------------------
 -- Queries task 3 -high-level queries
 ----------------------------------------------------------------------
-/*
+
 SELECT 'Query 1' AS 'Task 3';
 --Query 1
 SELECT * FROM book NATURAL JOIN genre 
@@ -362,63 +362,51 @@ NATURAL JOIN supplier
 WHERE quantity_in_stock < 5 
 GROUP BY book_id
 HAVING MIN (supply_price);
-*/
+
 ----------------------------------------------------------------------
 -- Queries task 3 - own queries
 ----------------------------------------------------------------------
 
---SELECT 'Own query 1' AS 'Task 3';
+SELECT 'Own query 1' AS 'Task 3';
 -- Own query 1 -- find late delivered orders for Wales
-/*
 SELECT order_id, customer_name, street, city, postcode, country, date_ordered, date_delivered
 FROM order_ 
 NATURAL JOIN customer
 WHERE date_ordered - date_delivered < 4
 AND customer.country = 'Wales';
-'*/
 
---SELECT 'Own query 2' AS 'Task 3';
+
+SELECT 'Own query 2' AS 'Task 3';
 -- Own query 2 --find hight priced books and count them
-/*
 SELECT COUNT (quantity_in_stock) AS high_priced_books
 FROM edition_
 WHERE edition_.price > 50
 ORDER BY edition_.price ASC;
-*/
 
---SELECT 'Own query 3' AS 'Task 3';
+
+SELECT 'Own query 3' AS 'Task 3';
 -- Own query 3 -- find book which customer heard
-/*
 SELECT book_id, title AS Matched_title , author, publisher, book_edition, book_type, price, quantity_in_stock FROM book
 NATURAL JOIN edition_
 WHERE book.title LIKE '%the%'
 ORDER BY edition_.quantity_in_stock ASC;
-*/
 
---SELECT 'Own query 4' AS 'Task 3';
+
+SELECT 'Own query 4' AS 'Task 3';
 -- Own query 4 -- find books with the best ratings
-
-/*
 SELECT book_id, title, author, publisher, rating 
 FROM book
 NATURAL JOIN review
 NATURAL JOIN edition_
 WHERE review.rating > 3
 ORDER BY review.rating DESC;
-*/
-
-
---
 
 ----------------------------------------------------------------------
 -- Queries task 3 - own views
 ----------------------------------------------------------------------
 
-
---SELECT 'Own view 1' AS 'Task 3';
+SELECT 'Own view 1' AS 'Task 3';
 -- Own view 1 --covid customers - show orders which when to covid region business contact - impact to own business
-
-/*
 CREATE VIEW covid_orders AS
 SELECT street, city, postcode, country, date_ordered FROM customer 
 NATURAL JOIN phone_customer 
@@ -427,16 +415,11 @@ WHERE customer.country = 'England'
 AND phone_customer.phone_type = 'business'
 ORDER BY order_.date_ordered DESC;
 
-SELECT * FROM covid_order;
-
-*/
+SELECT * FROM covid_orders;
 
 
---SELECT 'Own view 2' AS 'Task 3';
+SELECT 'Own view 2' AS 'Task 3';
 -- Own view 2 --show books which have a lucrative margin greater than >30
-/*
-s
-
 CREATE VIEW lucrative_margin AS
 SELECT book_id, title, author, publisher, book_edition, book_type, supply_price FROM book
 NATURAL JOIN edition_
@@ -445,12 +428,10 @@ WHERE edition_.price - supplies.supply_price > 30
 ORDER BY edition_.quantity_in_stock;
 
 SELECT * FROM lucrative_margin;
-*/
 
---SELECT 'Own view 4' AS 'Task 3';
+
+SELECT 'Own view 4' AS 'Task 3';
 -- Own view 4  --show books which have a small margin less than >15
-/*
-
 CREATE VIEW small_margin AS
 SELECT book_id, title, author, publisher, book_edition, book_type, supply_price FROM book
 NATURAL JOIN edition_
