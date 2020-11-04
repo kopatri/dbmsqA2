@@ -344,14 +344,6 @@ SELECT * FROM order_
 WHERE city = "Edinburgh" AND date_ordered > '2015-12-31'
 ORDER BY date_ordered DESC;
 
-SELECT * FROM order_
-WHERE city = "Edinburgh" AND date_ordered > '2015-12-31'
-ORDER BY date_ordered DESC;
-
-SELECT * FROM customer
-NATURAL JOIN order_
-WHERE customer.city = 'Edinburgh' AND order_.date_ordered > '2015-12-31'
-ORDER BY date_ordered DESC;
 
 SELECT 'Query 3' AS 'Task 3';
 --Query 3
