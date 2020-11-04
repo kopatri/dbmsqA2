@@ -377,7 +377,7 @@ AND customer.country = 'Wales';
 
 
 SELECT 'Own query 2' AS 'Task 3';
--- Own query 2 --find hight priced books and count them
+-- Own query 2 --find high priced books and count them
 SELECT COUNT (quantity_in_stock) AS high_priced_books
 FROM edition_
 WHERE edition_.price > 50
@@ -406,7 +406,7 @@ ORDER BY review.rating DESC;
 ----------------------------------------------------------------------
 
 SELECT 'Own view 1' AS 'Task 3';
--- Own view 1 --covid customers - show orders which when to covid region business contact - impact to own business
+-- Own view 1 -- see all places of business customers which are currently in lockdown due to covid 
 CREATE VIEW covid_orders AS
 SELECT street, city, postcode, country, date_ordered FROM customer 
 NATURAL JOIN phone_customer 
@@ -419,7 +419,7 @@ SELECT * FROM covid_orders;
 
 
 SELECT 'Own view 2' AS 'Task 3';
--- Own view 2 --show books which have a lucrative margin greater than >30
+-- Own view 2 - see all books with a lucrative margin
 CREATE VIEW lucrative_margin AS
 SELECT book_id, title, author, publisher, book_edition, book_type, supply_price FROM book
 NATURAL JOIN edition_
@@ -430,8 +430,8 @@ ORDER BY edition_.quantity_in_stock;
 SELECT * FROM lucrative_margin;
 
 
-SELECT 'Own view 4' AS 'Task 3';
--- Own view 4  --show books which have a small margin less than >15
+SELECT 'Own view 3' AS 'Task 3';
+-- Own view 3 -- see all books with a small smargin 
 CREATE VIEW small_margin AS
 SELECT book_id, title, author, publisher, book_edition, book_type, supply_price FROM book
 NATURAL JOIN edition_
