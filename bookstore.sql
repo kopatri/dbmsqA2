@@ -399,7 +399,7 @@ ORDER BY review.rating DESC;
 
 SELECT 'Own view 1' AS 'Task 3';
 -- Own view 1 -- see all places of business customers which are currently in lockdown due to covid 
-CREATE VIEW covid_orders AS
+CREATE VIEW business_partner_in_lockdown AS
 SELECT street, city, postcode, country, date_ordered FROM customer 
 NATURAL JOIN phone_customer 
 NATURAL JOIN order_
@@ -407,17 +407,17 @@ WHERE customer.country = 'England'
 AND phone_customer.phone_type = 'business'
 ORDER BY order_.date_ordered DESC;
 
-SELECT * FROM covid_orders;
+SELECT * FROM business_partner_in_lockdown;
 
 
 SELECT 'Own view 2' AS 'Task 3';
 -- Own view 2 - see all books with a lucrative margin
 CREATE VIEW lucrative_margin AS
-SELECT book_id, title, author, publisher, book_edition, book_type, supply_price FROM book
+SELECT book_id, title, author, publisher, book_edition, book_type, quantity_in_stock, supply_price FROM book
 NATURAL JOIN edition_
 NATURAL JOIN supplies
 WHERE edition_.price - supplies.supply_price > 30
-ORDER BY edition_.quantity_in_stock;
+ORDER BY edition_.quantity_in_stock ASC;
 
 SELECT * FROM lucrative_margin;
 
@@ -425,11 +425,11 @@ SELECT * FROM lucrative_margin;
 SELECT 'Own view 3' AS 'Task 3';
 -- Own view 3 -- see all books with a small smargin 
 CREATE VIEW small_margin AS
-SELECT book_id, title, author, publisher, book_edition, book_type, supply_price FROM book
+SELECT book_id, title, author, publisher, book_edition, book_type, quantity_in_stock, supply_price FROM book
 NATURAL JOIN edition_
 NATURAL JOIN supplies
 WHERE edition_.price - supplies.supply_price < 15
-ORDER BY edition_.quantity_in_stock;
+ORDER BY edition_.quantity_in_stock ASC;
 
 SELECT * FROM small_margin;
 
