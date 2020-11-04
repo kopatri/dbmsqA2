@@ -29,3 +29,21 @@ SELECT customer_name, street, city postcode, country, date_ordered, date_deliver
 FROM customer
 NATURAL JOIN order_
 WHERE order_.date_ordered - order_.date_delivered > 10 ;
+
+CREATE VIEW covid_orders AS
+SELECT street, city, postcode, country, date_ordered FROM customer 
+NATURAL JOIN phone_customer 
+NATURAL JOIN order_
+WHERE customer.country = 'England'
+AND phone_customer.phone_type = 'business'
+ORDER BY order_.date_ordered DESC;
+
+SELECT * FROM covid_order;
+
+
+--Wales is a small country
+SELECT order_id, customer_name, street, city, postcode, country, date_ordered, date_delivered
+FROM order_ 
+NATURAL JOIN customer
+WHERE date_ordered - date_delivered < 4
+AND customer.country = 'Wales';

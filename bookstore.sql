@@ -8,6 +8,7 @@
  
  sqlite3 <name.db> --init bookstore.sql
  */
+
 .mode column
 .headers on
 .width 18 18 18 18 -- enforce foreign keys check
@@ -17,9 +18,7 @@ PRAGMA foreign_keys = TRUE;
 -- database. Tables are listed in the order which allows to drop them
 -- without breaking foreign key constraints.
 --
--- book_id barcode generator: https://generate.plus/en/number/isbn  
--- https://www.random.org/strings/
--- https://www.fakenamegenerator.com/gen-random-en-uk.php
+
 /*
  DROP table order_;
  DROP table customer;
@@ -33,9 +32,11 @@ PRAGMA foreign_keys = TRUE;
  DROP table supplier;
  DROP table phone_supplier;
  */
+
 ----------------------------------------------------------------------
 -- Declarations
 ----------------------------------------------------------------------
+
 CREATE TABLE customer (
   customer_id CHAR(10),
   customer_name VARCHAR(50) NOT NULL,
@@ -61,7 +62,6 @@ CREATE TABLE order_ (
   ON UPDATE CASCADE
 );
 
-
 CREATE TABLE phone_customer(
   customer_id CHAR(10),
   phone_type VARCHAR(10),
@@ -71,7 +71,6 @@ CREATE TABLE phone_customer(
   ON DELETE CASCADE 
   ON UPDATE CASCADE
 );
-
 
 CREATE TABLE review(
   customer_id CHAR(10),
@@ -192,8 +191,6 @@ VALUES
   ('CU88888888', 'private', '+4478 6729 5567'), 
   ('CU99999999', 'business', '+4470 6336 3932'); 
 
-
-
 INSERT INTO book
 VALUES
   ('0-6879-4771-5','Database Design','Fred Heypen','Ultimate Books'),
@@ -207,7 +204,6 @@ VALUES
   ('0-9413-7369-1','The searcher','Hubert Murray','Dark Books'),
   ('0-5217-6095-2','Walk the wire','Thomas Walker','Dark Books');
 
-
 INSERT INTO review
 VALUES
   ('CU12345678', '0-6879-4771-5', 5),
@@ -220,7 +216,6 @@ VALUES
   ('CU77777777', '0-6598-5648-4', 4),
   ('CU88888888', '0-1420-0322-0', 3),
   ('CU99999999', '0-5217-6095-2', 1);
-
 
 INSERT INTO genre
 VALUES
@@ -293,10 +288,10 @@ VALUES
 
 INSERT INTO supplies
 VALUES
-  ('0-6879-4771-5','SUP1234567','Edition3','hardcover',9.99),
-  ('0-7185-5614-3','SUP1111111','Edition1','paperback',19.99),
+  ('0-6879-4771-5','SUP1234567','Edition3','hardcover',19.99),
+  ('0-7185-5614-3','SUP1111111','Edition1','paperback',29.99),
   ('0-4404-6826-4','SUP2222222','Edition4','audiobook',29.99),
-  ('0-9263-6827-3','SUP3333333','Edition1','audiobook',29.99),
+  ('0-9263-6827-3','SUP3333333','Edition1','audiobook',39.99),
   ('0-1420-0322-0','SUP4444444','Edition5','paperback',39.99),
   ('0-6859-0667-1','SUP5555555','Edition9','hardcover',39.99),
   ('0-4802-1161-2','SUP6666666','Edition5','hardcover',49.99),
@@ -309,7 +304,6 @@ VALUES
 ----------------------------------------------------------------------
 -- Visual data control of the tables
 ----------------------------------------------------------------------
-
 
 SELECT * FROM customer;
 
@@ -343,10 +337,20 @@ SELECT * FROM book NATURAL JOIN genre
 WHERE book.publisher = "Ultimate Books" 
 AND genre.genre_description = "Science and Technology";
 
+
 SELECT 'Query 2' AS 'Task 3';
 --Query 2
 SELECT * FROM order_
 WHERE city = "Edinburgh" AND date_ordered > '2015-12-31'
+ORDER BY date_ordered DESC;
+
+SELECT * FROM order_
+WHERE city = "Edinburgh" AND date_ordered > '2015-12-31'
+ORDER BY date_ordered DESC;
+
+SELECT * FROM customer
+NATURAL JOIN order_
+WHERE customer.city = 'Edinburgh' AND order_.date_ordered > '2015-12-31'
 ORDER BY date_ordered DESC;
 
 SELECT 'Query 3' AS 'Task 3';
@@ -363,33 +367,39 @@ HAVING MIN (supply_price);
 -- Queries task 3 - own queries
 ----------------------------------------------------------------------
 
--- high marging
-
-
+--SELECT 'Own query 1' AS 'Task 3';
+-- Own query 1 -- find late delivered orders for Wales
 /*
-SELECT book_id, title, author, publisher, book_edition, book_type, price AS sell_price, supply_price FROM book
+SELECT order_id, customer_name, street, city, postcode, country, date_ordered, date_delivered
+FROM order_ 
+NATURAL JOIN customer
+WHERE date_ordered - date_delivered < 4
+AND customer.country = 'Wales';
+'*/
+
+--SELECT 'Own query 2' AS 'Task 3';
+-- Own query 2 --find hight priced books and count them
+/*
+SELECT COUNT (quantity_in_stock) AS high_priced_books
+FROM edition_
+WHERE edition_.price > 50
+ORDER BY edition_.price ASC;
+*/
+
+--SELECT 'Own query 3' AS 'Task 3';
+-- Own query 3 -- find book which customer heard
+/*
+SELECT book_id, title AS Matched_title , author, publisher, book_edition, book_type, price, quantity_in_stock FROM book
 NATURAL JOIN edition_
-NATURAL JOIN supplies
-WHERE edition_.price - supplies.supply_price > 30
-ORDER BY edition_.quantity_in_stock;
+WHERE book.title LIKE '%the%'
+ORDER BY edition_.quantity_in_stock ASC;
 */
 
-
-----------------------------------------------------------------------
--- Queries task 3 - own views
-----------------------------------------------------------------------
+--SELECT 'Own query 4' AS 'Task 3';
+-- Own query 4 -- find books with the best ratings
 
 /*
-SELECT customer_name, email, street, city, postcode, country, phone_type, phone_number, date_ordered FROM customer 
-NATURAL JOIN phone_customer 
-NATURAL JOIN order_
-WHERE customer.country = 'England'
-AND phone_customer.phone_type = 'business'
-ORDER BY order_.date_ordered DESC;
-*/
-
-/* not functional for , show most succesfull prices
-SELECT book_id, title, author publisher, rating 
+SELECT book_id, title, author, publisher, rating 
 FROM book
 NATURAL JOIN review
 NATURAL JOIN edition_
@@ -398,4 +408,55 @@ ORDER BY review.rating DESC;
 */
 
 
+--
+
+----------------------------------------------------------------------
+-- Queries task 3 - own views
+----------------------------------------------------------------------
+
+
+--SELECT 'Own view 1' AS 'Task 3';
+-- Own view 1 --covid customers - show orders which when to covid region business contact - impact to own business
+
+/*
+CREATE VIEW covid_orders AS
+SELECT street, city, postcode, country, date_ordered FROM customer 
+NATURAL JOIN phone_customer 
+NATURAL JOIN order_
+WHERE customer.country = 'England'
+AND phone_customer.phone_type = 'business'
+ORDER BY order_.date_ordered DESC;
+
+SELECT * FROM covid_order;
+
+*/
+
+
+--SELECT 'Own view 2' AS 'Task 3';
+-- Own view 2 --show books which have a lucrative margin greater than >30
+/*
+s
+
+CREATE VIEW lucrative_margin AS
+SELECT book_id, title, author, publisher, book_edition, book_type, supply_price FROM book
+NATURAL JOIN edition_
+NATURAL JOIN supplies
+WHERE edition_.price - supplies.supply_price > 30
+ORDER BY edition_.quantity_in_stock;
+
+SELECT * FROM lucrative_margin;
+*/
+
+--SELECT 'Own view 4' AS 'Task 3';
+-- Own view 4  --show books which have a small margin less than >15
+/*
+
+CREATE VIEW small_margin AS
+SELECT book_id, title, author, publisher, book_edition, book_type, supply_price FROM book
+NATURAL JOIN edition_
+NATURAL JOIN supplies
+WHERE edition_.price - supplies.supply_price < 15
+ORDER BY edition_.quantity_in_stock;
+
+SELECT * FROM small_margin;
 
